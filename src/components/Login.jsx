@@ -16,6 +16,7 @@ function Login() {
       localStorage.setItem("token",res.data.jwt);
       localStorage.setItem("name",res.data.username);
       localStorage.setItem("UserID",res.data.id);
+      window.location.href="/innovation/";
     } catch(error) {
       localStorage.setItem("token","");
       localStorage.setItem("name","");
