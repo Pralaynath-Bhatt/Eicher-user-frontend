@@ -12,8 +12,14 @@ function Login() {
     try {
       const res = await login(username, password);
       setMessage(res.data);
+      
       localStorage.setItem("token",res.data.jwt);
+      localStorage.setItem("name",res.data.username);
+      localStorage.setItem("UserID",res.data.id);
     } catch(error) {
+      localStorage.setItem("token","");
+      localStorage.setItem("name","");
+      localStorage.setItem("UserID","");
       setMessage(error.response.data);
       alert(error.response.data);
       console.log(error.response.data);
@@ -49,7 +55,7 @@ function Login() {
         
       </form><br /><br />
       <Link to="/user/auth/forgotpass">Forgot Password</Link>        
-      <p>{localStorage.getItem("token")}</p>
+      <p>{localStorage.getItem("name")}</p>
     </div>
   );
 }
