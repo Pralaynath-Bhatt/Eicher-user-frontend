@@ -1,33 +1,73 @@
 import React, { useState } from "react";
 import { register } from "./Auth";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 🛑 Client-side validation
+    if (!username.trim()) {
+      setMessage("Username is required");
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      setMessage("Password must be at least 6 characters");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
     try {
       const res = await register(username, email, password);
+
+      // 🛡 Defensive response check
+      if (!res?.data) {
+        throw new Error("Invalid registration response");
+      }
+
       setMessage(res.data);
-      alert(res.data);
-      window.location.href="/login/";
+
+      // 🚀 Redirect after success
+      setTimeout(() => window.location.href="/login/", 1000);
+
     } catch (error) {
-      if(error.response&&error.response.data){
-        setMessage(error.response.data);
-        alert(error.response.data);
-        console.log(error.response);
+      console.error("Register error:", error);
+
+      let errorMessage = "Something went wrong. Please try again.";
+
+      if (error.response) {
+        errorMessage =
+          error.response.data?.message ||
+          error.response.data ||
+          errorMessage;
+      } else if (error.request) {
+        errorMessage = "Server not reachable. Please try again.";
+      } else {
+        errorMessage = error.message;
       }
-      else{
-        setMessage("Something went wrong");
-      }
+
+      setMessage(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
 
       <form onSubmit={handleSubmit}>
@@ -36,7 +76,7 @@ function Register() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          required
+          disabled={loading}
         />
 
         <br /><br />
@@ -46,7 +86,7 @@ function Register() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          disabled={loading}
         />
 
         <br /><br />
@@ -56,15 +96,19 @@ function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          disabled={loading}
         />
 
         <br /><br />
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
-<br /><br />
-      <p>{message}</p>
+
+      <br />
+
+      {message && <p className="feedback">{message}</p>}
     </div>
   );
 }
