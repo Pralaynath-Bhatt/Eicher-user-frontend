@@ -13,6 +13,7 @@ function Register() {
       const res = await register(username, email, password);
       setMessage(res.data);
       alert(res.data);
+      window.location.href="/login/";
     } catch (error) {
       if(error.response&&error.response.data){
         setMessage(error.response.data);

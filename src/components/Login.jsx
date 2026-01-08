@@ -55,7 +55,7 @@ function Login() {
         <button type="submit">Login</button>
         
       </form><br /><br />
-      <Link to="/user/auth/forgotpass">Forgot Password</Link>        
+      <Link to="/login/forgotpass">Forgot Password</Link>        
       <p>{localStorage.getItem("name")}</p>
     </div>
   );

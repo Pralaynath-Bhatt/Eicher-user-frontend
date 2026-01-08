@@ -35,6 +35,7 @@ function ForgotPass() {
     try {
       const res = await resetPass(email, otp, password);
       setMessage(res.data);
+      window.location.href="/login/";
     } catch (err) {
       setMessage(err.response?.data || "Error resetting password");
     }
