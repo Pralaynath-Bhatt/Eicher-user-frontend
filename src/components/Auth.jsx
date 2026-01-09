@@ -7,11 +7,11 @@ export const sendOTP = (email) => {
 };
 
 export const verifyOTP = (email, otp) => {
-  return api.post(`${API_URL}/login/verify-otp`, { email, otp });
+  return api.post(`${API_URL}/login/verifyOtp`, { email, otp });
 };
 
 export const resetPass = (email, otp, password) => {
-  return api.post(`${API_URL}/login/resetpass`, { email, otp, password });
+  return api.post(`${API_URL}/login/resetPass`, { email, otp, password });
 };
 
 export const login = (username, password) => {

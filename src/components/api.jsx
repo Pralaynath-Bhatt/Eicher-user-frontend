@@ -7,9 +7,9 @@ const api = axios.create({
 const PUBLIC_ENDPOINTS = [
   "api/auth/login",
   "api/auth/register",
-  "api/auth/login/forgot-password",
-  "api/auth/login/verify-otp",
-  "api/auth/login/resetpass",
+  "api/auth/login/forgotPassword",
+  "api/auth/login/verifyOtp",
+  "api/auth/login/resetPass",
 ];
 
 api.interceptors.request.use(
