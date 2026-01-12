@@ -21,7 +21,7 @@ function ForgotPass() {
     console.error(err);
 
     if (err.response) {
-      return err.response.data?.message || err.response.data || fallback;
+      return err.response.data?.message||err.response.data?.errors?.email||err.response.data?.errors?.otp||err.response.data?.errors?.password || err.response.data || fallback;
     }
     if (err.request) {
       return "Server not reachable. Please try again.";

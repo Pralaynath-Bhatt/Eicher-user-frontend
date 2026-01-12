@@ -38,7 +38,7 @@ function Login() {
 
       if (error.response) {
         errorMessage =
-          error.response.data?.message ||
+          error.response.data?.message ||error.response.data?.errors?.username||error.response.data?.errors?.password||
           error.response.data ||
           "Invalid username or password";
       } else if (error.request) {

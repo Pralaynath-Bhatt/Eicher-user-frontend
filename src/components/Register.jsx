@@ -51,7 +51,7 @@ function Register() {
 
       if (error.response) {
         errorMessage =
-          error.response.data?.message ||
+          error.response.data?.message ||err.response.data?.errors?.email||err.response.data?.errors?.password||err.response.data?.errors?.username||
           error.response.data ||
           errorMessage;
       } else if (error.request) {
@@ -77,6 +77,7 @@ function Register() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           disabled={loading}
+          required
         />
 
         <br /><br />
@@ -87,6 +88,7 @@ function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={loading}
+          required
         />
 
         <br /><br />
@@ -97,6 +99,7 @@ function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           disabled={loading}
+          required
         />
 
         <br /><br />
