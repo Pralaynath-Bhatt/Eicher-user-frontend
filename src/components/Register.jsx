@@ -13,58 +13,63 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
 
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Client side validation
+  if (!username.trim()) {
+    setMessage("Username is required");
+    return;
+  }
 
-    // 🛑 Client-side validation
-    if (!username.trim()) {
-      setMessage("Username is required");
-      return;
+  if (!password || password.length < 6) {
+    setMessage("Password must be at least 6 characters");
+    return;
+  }
+
+  setLoading(true);
+  setMessage("");
+
+  try {
+    const res = await register(username, email, password);
+
+    const apiRes = res.data;
+
+    if (apiRes.success) {
+      setMessage(apiRes.message);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     }
 
-    if (!password || password.length < 6) {
-      setMessage("Password must be at least 6 characters");
-      return;
-    }
+  } catch (error) {
+    let errorMessage = "Something went wrong. Please try again.";
 
-    setLoading(true);
-    setMessage("");
+    if (error.response) {
+      const apiRes = error.response.data;
 
-    try {
-      const res = await register(username, email, password);
-
-      // 🛡 Defensive response check
-      if (!res?.data) {
-        throw new Error("Invalid registration response");
+      // Validation errors
+      if (apiRes.data && typeof apiRes.data === "object") {
+        // Pick first validation error
+        const firstError = Object.values(apiRes.data)[0];
+        errorMessage = firstError;
+      }
+      // Business/System errors
+      else if (apiRes.message) {
+        errorMessage = apiRes.message;
       }
 
-      setMessage(res.data);
-
-      // 🚀 Redirect after success
-      setTimeout(() => window.location.href="/login/", 1000);
-
-    } catch (error) {
-      console.error("Register error:", error);
-
-      let errorMessage = "Something went wrong. Please try again.";
-
-      if (error.response) {
-        errorMessage =
-          error.response.data?.message ||err.response.data?.errors?.email||err.response.data?.errors?.password||err.response.data?.errors?.username||
-          error.response.data ||
-          errorMessage;
-      } else if (error.request) {
-        errorMessage = "Server not reachable. Please try again.";
-      } else {
-        errorMessage = error.message;
-      }
-
-      setMessage(errorMessage);
-    } finally {
-      setLoading(false);
+    } else if (error.request) {
+      errorMessage = "Server not reachable. Please try again.";
     }
-  };
+
+    setMessage(errorMessage);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="register-container">

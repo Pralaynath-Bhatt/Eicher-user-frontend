@@ -21,26 +21,26 @@ function Login() {
 
     try {
       const res = await login(username, password);
+      
+      if(res.data.success){
 
-      if (!res?.data?.jwt || !res?.data?.username || !res?.data?.id) {
-        throw new Error("Invalid login response");
-      }
-
-      localStorage.setItem("token", res.data.jwt);
-      localStorage.setItem("name", res.data.username);
-      localStorage.setItem("UserID", res.data.id);
+      localStorage.setItem("token", res.data.data.jwt);
+      localStorage.setItem("name", res.data.data.username);
+      localStorage.setItem("UserID", res.data.data.id);
+      setMessage(res.data.message)
       setTimeout(() => window.location.href="/innovation/", 1000);
-
+      }
     } catch (error) {
-      console.error("Login error:", error);
-
+    
       let errorMessage = "Something went wrong. Please try again.";
 
       if (error.response) {
-        errorMessage =
-          error.response.data?.message ||error.response.data?.errors?.username||error.response.data?.errors?.password||
-          error.response.data ||
-          "Invalid username or password";
+        if(error.response.data?.data!=null&&typeof error.response.data?.data==="object"){
+        errorMessage=  Object.values(error.response.data?.data)[0];
+      }
+        else{
+        errorMessage = error.response.data?.message ||
+          "Invalid username or password";}
       } else if (error.request) {
         errorMessage = "Server not reachable. Check your network.";
       } else {

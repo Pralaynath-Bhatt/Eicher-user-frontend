@@ -18,16 +18,17 @@ function ForgotPass() {
  
 
   const handleError = (err, fallback) => {
-    console.error(err);
 
-    if (err.response) {
-      return err.response.data?.message||err.response.data?.errors?.email||err.response.data?.errors?.otp||err.response.data?.errors?.password || err.response.data || fallback;
-    }
-    if (err.request) {
-      return "Server not reachable. Please try again.";
-    }
-    return err.message || fallback;
-  };
+    if (!err.response.data.success) {
+      if(err.response.data.data!=null&& typeof err.response.data.data==="object"){
+        return Object.values(err.response.data.data)[0]
+      }
+      else {
+          return err.response.data.message;
+      }
+  }
+  else return "Something went wrong try again later"
+}
 
   const handleSendOtp = async () => {
    
@@ -37,8 +38,10 @@ function ForgotPass() {
 
     try {
       const res = await sendOTP(email);
-      setMessage(res.data);
-      setOtpSent(true);
+      if(res.data.success){
+        setMessage(res.data.message);
+        setOtpSent(true);
+      }
     } catch (err) {
       setMessage(handleError(err, "Error sending OTP"));
     } finally {
@@ -57,7 +60,7 @@ function ForgotPass() {
 
     try {
       const res = await verifyOTP(email, otp);
-      setMessage(res.data);
+      setMessage(res.data.message);
       setOtpVerified(true);
     } catch (err) {
       setMessage(handleError(err, "Invalid OTP"));
@@ -77,7 +80,7 @@ function ForgotPass() {
 
     try {
       const res = await resetPass(email, otp, password);
-      setMessage(res.data);
+      setMessage(res.data.message);
 
       setTimeout(() => window.location.href="/login/", 1000);
 
