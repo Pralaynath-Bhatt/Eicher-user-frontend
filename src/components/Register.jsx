@@ -73,50 +73,49 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
-
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={loading}
-          required
-        />
+      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+            
+            <legend className="fieldset-legend">Register</legend>
 
-        <br /><br />
+            <label className="label">Username</label>
+            <input 
+            type="text" 
+            className="input" 
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            disabled={loading}
+            required />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-          required
-        />
+            <label className="label">Email</label>
+            <input 
+            type="email" 
+            className="input" 
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+            required />
 
-        <br /><br />
+            <label className="label" >Password</label>
+            <input 
+            type="password" 
+            className="input" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
+            required
+            />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loading}
-          required
-        />
-
-        <br /><br />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
-      </form>
-
-      <br />
-
-      {message && <p className="feedback">{message}</p>}
+          <button className="btn btn-neutral mt-4" type="submit" disabled={loading}>Register</button>
+            <br />
+            {loading ? "Logging in..." : ""}
+            
+      {message && <p className="error-message">{message}</p>}
+      </fieldset>
+        </form>
     </div>
   );
 }

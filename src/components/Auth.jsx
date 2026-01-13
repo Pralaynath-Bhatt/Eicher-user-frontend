@@ -14,8 +14,8 @@ export const resetPass = (email, otp, password) => {
   return api.post(`${API_URL}/login/resetPass`, { email, otp, password });
 };
 
-export const login = (username, password) => {
-  return api.post(`${API_URL}/login`, { username, password });
+export const login = (email, password) => {
+  return api.post(`${API_URL}/login`, { email, password });
 };
 
 export const register = (username, email, password) => {

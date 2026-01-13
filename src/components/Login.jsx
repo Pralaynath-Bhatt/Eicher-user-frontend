@@ -3,7 +3,7 @@ import { login } from "./Auth";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,8 +11,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username.trim() || !password.trim()) {
-      setMessage("Username and password are required");
+    if (!email.trim() || !password.trim()) {
+      setMessage("email and password are required");
       return;
     }
 
@@ -20,12 +20,12 @@ function Login() {
     setMessage("");
 
     try {
-      const res = await login(username, password);
+      const res = await login(email, password);
       
       if(res.data.success){
 
       localStorage.setItem("token", res.data.data.jwt);
-      localStorage.setItem("name", res.data.data.username);
+      localStorage.setItem("name", res.data.data.email);
       localStorage.setItem("UserID", res.data.data.id);
       setMessage(res.data.message)
       setTimeout(() => window.location.href="/innovation/", 1000);
@@ -40,7 +40,7 @@ function Login() {
       }
         else{
         errorMessage = error.response.data?.message ||
-          "Invalid username or password";}
+          "Invalid email or password";}
       } else if (error.request) {
         errorMessage = "Server not reachable. Check your network.";
       } else {
@@ -59,41 +59,42 @@ function Login() {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={loading}
-          required
-        />
+      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+            
+            <legend className="fieldset-legend">Login</legend>
 
-        <br /><br />
+            <label className="label">Email</label>
+            <input 
+            type="email" 
+            className="input" 
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+            required />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loading}
-          required
-        />
+            <label className="label" >Password</label>
+            <input 
+            type="password" 
+            className="input" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
+            required
+            />
 
-        <br /><br />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-
-      <br />
-
-      <Link to="/login/forgotpass">Forgot Password?</Link>
-
+          <button className="btn btn-neutral mt-4" type="submit" disabled={loading}>Login</button>
+                <Link className="btn btn-neutral mt-4" to="/login/register" disabled={loading}>Register</Link>
+             <Link to="/login/forgotpass">Forgot Password?</Link>
+            <br />
+            {loading ? "Logging in..." : ""}
+            
       {message && <p className="error-message">{message}</p>}
+        
+      </fieldset>
+      </form>
     </div>
   );
 }

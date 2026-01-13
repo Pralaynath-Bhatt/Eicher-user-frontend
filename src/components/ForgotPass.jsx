@@ -93,46 +93,26 @@ function ForgotPass() {
 
   return (
     <div className="forgot-container">
-      <h2>Forgot Password</h2>
-
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        disabled={otpSent || loading}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button onClick={handleSendOtp} disabled={loading || otpSent}>
-        {loading ? "Sending..." : "Send OTP"}
-      </button>
-
-      <br /><br />
-
-      <input
-        type="text"
-        placeholder="OTP"
-        value={otp}
-        disabled={!otpSent || otpVerified || loading}
-        onChange={(e) => setOtp(e.target.value)}
-      />
-      <button onClick={handleVerifyOtp} disabled={!otpSent || otpVerified || loading}>
-        {loading ? "Verifying..." : "Verify OTP"}
-      </button>
-
-      <br /><br />
-
-      <input
-        type="password"
-        placeholder="New Password"
-        value={password}
-        disabled={!otpVerified || loading}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleResetPassword} disabled={!otpVerified || loading}>
-        {loading ? "Resetting..." : "Reset Password"}
-      </button>
-
+      
+      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <legend className="fieldset-legend">Forgot Password</legend>
+      <div className="join">
+      <input type="email" className="input join-item" placeholder="Email" value={email} disabled={otpSent || loading} onChange={(e) => setEmail(e.target.value)} />
+      <button className="btn join-item" onClick={handleSendOtp} disabled={loading || otpSent}>{loading ? "Sending..." : "Send OTP"}</button>
+      </div>
+      <br />
+      <div className="join">
+      <input type="text" className="input join-item" placeholder="OTP" value={otp} disabled={!otpSent || otpVerified || loading} onChange={(e) => setOtp(e.target.value)} />
+      <button className="btn join-item" onClick={handleVerifyOtp} disabled={!otpSent || otpVerified || loading}>{loading ? "Verifying..." : "Verify OTP"}</button>
+      </div>
+      <br />
+      <div className="join">
+      <input type="password" className="input join-item" placeholder="Password" value={password} disabled={!otpVerified || loading} onChange={(e) => setPassword(e.target.value)} />
+      <button className="btn join-item" onClick={handleResetPassword} disabled={!otpVerified || loading}>{loading ? "Resetting..." : "Reset Password"}</button>
+      </div>
       {message && <p className="feedback">{message}</p>}
+</fieldset>
+      
     </div>
   );
 }
