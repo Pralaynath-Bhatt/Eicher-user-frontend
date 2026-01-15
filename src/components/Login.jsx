@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { login } from "./Auth";
 import { Link, useNavigate } from "react-router-dom";
+import { setUser,removeUser } from "./redux/loginSlice";
+import { useDispatch } from "react-redux";
 
 function Login() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,11 +26,11 @@ function Login() {
       
       if(res.data.success){
 
-      localStorage.setItem("token", res.data.data.jwt);
-      localStorage.setItem("name", res.data.data.email);
-      localStorage.setItem("UserID", res.data.data.id);
+      dispatch(setUser({username:res.data.data.username,userId:res.data.data.id,token:res.data.data.jwt}));
       setMessage(res.data.message)
-      setTimeout(() => window.location.href="/innovation/", 1000);
+      console.log("hiii")
+      console.log(localStorage.getItem("token"));
+     // setTimeout(() => window.location.href="/innovation/", 1000);
       }
     } catch (error) {
     
@@ -38,14 +40,13 @@ function Login() {
         if(error.response.data?.data!=null&&typeof error.response.data?.data==="object"){
         errorMessage=  Object.values(error.response.data?.data)[0];
       }
-        else{
-        errorMessage = error.response.data?.message ||
-          "Invalid email or password";}
-      } else if (error.request) {
-        errorMessage = "Server not reachable. Check your network.";
-      } else {
-        errorMessage = error.message;
+        else if(error.response.data?.message){
+        errorMessage = error.response.data?.message 
       }
+      else {
+        errorMessage = "Server not reachable. Please try again later.";
+      }
+      } 
 
       localStorage.removeItem("token");
       localStorage.removeItem("name");

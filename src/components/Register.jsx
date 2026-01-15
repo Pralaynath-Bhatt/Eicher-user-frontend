@@ -59,11 +59,10 @@ const handleSubmit = async (e) => {
       else if (apiRes.message) {
         errorMessage = apiRes.message;
       }
-
-    } else if (error.request) {
+      else{
       errorMessage = "Server not reachable. Please try again.";
     }
-
+    } 
     setMessage(errorMessage);
   } finally {
     setLoading(false);
