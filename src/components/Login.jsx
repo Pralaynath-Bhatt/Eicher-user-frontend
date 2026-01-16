@@ -26,11 +26,9 @@ function Login() {
       
       if(res.data.success){
 
-      dispatch(setUser({username:res.data.data.username,userId:res.data.data.id,token:res.data.data.jwt}));
+      dispatch(setUser({email:res.data.data.email,userId:res.data.data.id,token:res.data.data.jwt}));
       setMessage(res.data.message)
-      console.log("hiii")
-      console.log(localStorage.getItem("token"));
-     // setTimeout(() => window.location.href="/innovation/", 1000);
+      setTimeout(() => window.location.href="/innovation/", 1000);
       }
     } catch (error) {
     
@@ -49,8 +47,8 @@ function Login() {
       } 
 
       localStorage.removeItem("token");
-      localStorage.removeItem("name");
-      localStorage.removeItem("UserID");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("userId");
 
       setMessage(errorMessage);
     } finally {
